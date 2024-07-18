@@ -4,6 +4,7 @@ sys.path.append('../BooksRecom')
 from datetime import datetime
 
 from sqlalchemy import Column, Integer, String, DateTime, Text, ForeignKey
+from sqlalchemy.sql import func
 from model.sql_connect import Base
 
 class Books(Base):
@@ -15,9 +16,9 @@ class Books(Base):
     author = Column(String(100), nullable=False)
     genre = Column(String(100), nullable=False)
     summary = Column(Text, nullable=False)
-    year_published = Column(DateTime())
-    created_on = Column(DateTime(), default=datetime.now)
-    updated_on = Column(DateTime(), default=datetime.now, onupdate=datetime.now)
+    year_published = Column(DateTime(timezone=True))
+    created_on = Column(DateTime(timezone=True), default=func.now())
+    updated_on = Column(DateTime(timezone=True), default=func.now(), onupdate=func.now())
 
     def as_dict(self):
         return {c.name: getattr(self, c.name) for c in self.__table__.columns}
@@ -30,8 +31,8 @@ class Reviews(Base):
     user_id = Column(Integer())
     review_text = Column(Text, nullable=False)
     rating = Column(Integer(), nullable=False)
-    created_on = Column(DateTime(), default=datetime.now)
-    updated_on = Column(DateTime(), default=datetime.now, onupdate=datetime.now)
+    created_on = Column(DateTime(timezone=True), default=datetime.now)
+    updated_on = Column(DateTime(timezone=True), default=datetime.now, onupdate=datetime.now)
     book_id = Column(Integer(), ForeignKey('books.id'))
 
     def as_dict(self):

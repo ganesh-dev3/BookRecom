@@ -41,7 +41,7 @@ async def put(book_id):
     async with get_session() as session:
         async with session.begin():
             books = CRUDService(session)
-            return await books.update_book(book_id, data)
+            return await books.update_book(int(book_id), data)
 
 
 @books_page.route('/books/<book_id>', methods=["DELETE"])
@@ -52,7 +52,7 @@ async def delete(book_id):
     async with get_session() as session:
         async with session.begin():
             books = CRUDService(session)
-            return await books.delete_book(book_id)
+            return await books.delete_book(int(book_id))
 
 @books_page.route('/reviews/<book_id>', methods=["GET"])
 @api_key_required()
@@ -61,7 +61,7 @@ async def reviews_get(book_id):
     async with get_session() as session:
         async with session.begin():
             books = CRUDService(session)
-            return await books.get_reviews(book_id)
+            return await books.get_reviews(int(book_id))
 
 #@validate_headers(Headers)
 @books_page.route('/reviews/<book_id>', methods=["POST"])
@@ -73,7 +73,7 @@ async def reviews_post(book_id, data):
     async with get_session() as session:
         async with session.begin():
             books = CRUDService(session)
-            return await books.add_review(book_id, data)
+            return await books.add_review(int(book_id), data)
 
 @books_page.route('/summary/<book_id>', methods=["GET"])
 @api_key_required()
@@ -83,7 +83,7 @@ async def summary_rating(book_id):
     async with get_session() as session:
         async with session.begin():
             books = CRUDService(session)
-            return await books.summary(book_id)
+            return await books.summary(int(book_id))
 
 @books_page.route('/recommendations', methods=["GET"])
 @api_key_required()
@@ -94,6 +94,6 @@ async def get_recommendations():
 @books_page.route('/generate_summary', methods=["POST"])
 #@validate_request(AddReviewModel)
 @api_key_required()
-async def generate_summary(data):
+async def generate_summary():
     #data = request.get_json()
     pass
